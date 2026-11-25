@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFDS — Hafiz Muhammad Ubai | Full Stack Web Developer</title>
+<meta name="description" content="AFDS — Building websites that grow your business. Premium, futuristic web development by Hafiz Muhammad Ubai.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+:root{
+  --navy:#0D1B2A;
+  --navy-deep:#081119;
+  --blue:#1A73E8;
+  --blue-light:#4F9BFF;
+  --gold:#F5A623;
+  --white:#F7F9FC;
+  --glass:rgba(255,255,255,0.05);
+  --glass-border:rgba(255,255,255,0.10);
+  --ff-display:'Bricolage Grotesque', sans-serif;
+  --ff-body:'Inter', sans-serif;
+  --ff-mono:'JetBrains Mono', monospace;
+  --ease:cubic-bezier(.16,.84,.44,1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--navy);
+  color:var(--white);
+  font-family:var(--ff-body);
+  overflow-x:hidden;
+  line-height:1.6;
+}
+::selection{background:var(--gold);color:var(--navy);}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+.container{width:min(1240px,92%);margin:0 auto;}
+.eyebrow{
+  font-family:var(--ff-mono);
+  font-size:.72rem;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--gold);
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:18px;
+}
+.eyebrow::before{content:'';width:26px;height:1px;background:var(--gold);}
+h1,h2,h3{font-family:var(--ff-display);font-weight:700;letter-spacing:-.02em;}
+.section-title{font-size:clamp(2rem,4.4vw,3.4rem);line-height:1.05;margin-bottom:18px;}
+.section-sub{color:rgba(247,249,252,.62);font-size:1.02rem;max-width:560px;}
+.section-head{margin-bottom:64px;}
+.grad-text{
+  background:linear-gradient(100deg,var(--blue-light),var(--gold) 70%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+section{position:relative;padding:140px 0;}
+
+/* cursor */
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%);mix-blend-mode:difference;}
+.cursor-dot{width:6px;height:6px;background:#fff;}
+.cursor-ring{width:34px;height:34px;border:1px solid rgba(255,255,255,.6);transition:width .25s var(--ease),height .25s var(--ease),border-color .25s;}
+.cursor-ring.hover{width:58px;height:58px;border-color:var(--gold);}
+@media(max-width:900px){.cursor-dot,.cursor-ring{display:none;}}
+
+/* scrollbar */
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:var(--navy-deep);}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--blue),var(--gold));border-radius:10px;}
+
+/* ---------- NAV ---------- */
+header{
+  position:fixed;top:0;left:0;width:100%;z-index:1000;
+  padding:22px 0;transition:padding .35s var(--ease),background .35s var(--ease),backdrop-filter .35s;
+}
+header.scrolled{
+  padding:14px 0;
+  background:rgba(8,17,25,.72);
+  backdrop-filter:blur(18px) saturate(160%);
+  border-bottom:1px solid var(--glass-border);
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:var(--ff-display);font-weight:800;font-size:1.35rem;letter-spacing:.04em;display:flex;align-items:center;gap:10px;}
+.logo span{color:var(--gold);}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--blue),var(--gold));display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:800;color:var(--navy-deep);box-shadow:0 0 22px rgba(26,115,232,.55);}
+nav ul{list-style:none;display:flex;gap:38px;}
+nav a{font-size:.92rem;font-weight:500;color:rgba(247,249,252,.78);position:relative;}
+nav a::after{content:'';position:absolute;left:0;bottom:-6px;width:0;height:1px;background:var(--gold);transition:width .3s var(--ease);}
+nav a:hover{color:var(--white);}
+nav a:hover::after{width:100%;}
+.nav-cta{
+  padding:11px 24px;border-radius:999px;
+  background:linear-gradient(100deg,var(--blue),var(--blue-light));
+  font-size:.86rem;font-weight:600;
+  box-shadow:0 8px 30px -8px rgba(26,115,232,.7);
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease);
+}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 12px 34px -6px rgba(245,166,35,.55);}
+.nav-toggle{display:none;width:26px;height:20px;position:relative;}
+.nav-toggle span{position:absolute;left:0;width:100%;height:2px;background:#fff;border-radius:2px;transition:.3s;}
+.nav-toggle span:nth-child(1){top:0;}
+.nav-toggle span:nth-child(2){top:9px;}
+.nav-toggle span:nth-child(3){top:18px;}
+@media(max-width:880px){
+  nav ul,.nav-cta{display:none;}
+  .nav-toggle{display:block;}
+}
+
+/* ---------- HERO ---------- */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding-top:120px;position:relative;overflow:hidden;
+}
+#particle-canvas{position:absolute;inset:0;z-index:0;}
+.hero-glow{
+  position:absolute;width:70vw;height:70vw;max-width:900px;max-height:900px;
+  top:-20%;left:50%;transform:translateX(-50%);
+  background:radial-gradient(circle,rgba(26,115,232,.28),transparent 65%);
+  filter:blur(10px);pointer-events:none;z-index:0;
+}
+.hero-beam{position:absolute;width:1px;height:100%;top:0;
+  background:linear-gradient(180deg,transparent,rgba(245,166,35,.5),transparent);
+  opacity:.5;z-index:0;}
+.hero-beam.b1{left:18%;}
+.hero-beam.b2{left:82%;}
+.hero-inner{position:relative;z-index:2;text-align:center;margin:0 auto;}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 18px;border-radius:999px;
+  background:var(--glass);border:1px solid var(--glass-border);
+  font-family:var(--ff-mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:30px;backdrop-filter:blur(10px);
+}
+.hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold);animation:pulse 1.8s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.hero h1{
+  font-size:clamp(2.6rem,7vw,5.6rem);line-height:1.03;letter-spacing:-.03em;
+  margin:0 auto 26px;max-width:1000px;
+}
+.hero h1 .line{display:block;overflow:hidden;}
+.hero h1 .line span{display:inline-block;}
+.hero p.sub{
+  max-width:600px;margin:0 auto 46px;color:rgba(247,249,252,.65);
+  font-size:1.12rem;
+}
+.hero-ctas{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:90px;}
+.btn{
+  padding:16px 34px;border-radius:999px;font-weight:600;font-size:.95rem;
+  position:relative;overflow:hidden;transition:transform .35s var(--ease);
+  display:inline-flex;align-items:center;gap:10px;
+}
+.btn:hover{transform:translateY(-3px);}
+.btn-primary{background:linear-gradient(100deg,var(--blue),var(--blue-light));box-shadow:0 10px 34px -8px rgba(26,115,232,.75);}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(100deg,var(--gold),#ffcf7a);opacity:0;transition:opacity .35s;}
+.btn-primary:hover::before{opacity:1;}
+.btn-primary span{position:relative;z-index:1;}
+.btn-primary:hover{color:var(--navy-deep);}
+.btn-ghost{border:1px solid var(--glass-border);background:var(--glass);backdrop-filter:blur(10px);}
+.btn-ghost:hover{border-color:var(--gold);background:rgba(245,166,35,.08);}
+
+.stats-row{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  max-width:720px;margin:0 auto;
+  background:var(--glass-border);border:1px solid var(--glass-border);border-radius:20px;overflow:hidden;
+}
+.stat{background:rgba(13,27,42,.7);backdrop-filter:blur(14px);padding:28px 10px;text-align:center;}
+.stat .num{font-family:var(--ff-display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;color:var(--white);}
+.stat .num span{color:var(--gold);}
+.stat .lbl{font-size:.78rem;color:rgba(247,249,252,.55);text-transform:uppercase;letter-spacing:.12em;margin-top:4px;}
+
+.scroll-indicator{
+  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:10px;z-index:2;
+}
+.scroll-indicator .mouse{width:24px;height:38px;border:1.5px solid rgba(247,249,252,.4);border-radius:14px;display:flex;justify-content:center;padding-top:7px;}
+.scroll-indicator .mouse i{width:3px;height:8px;border-radius:3px;background:var(--gold);animation:scrolldown 1.6s infinite;}
+@keyframes scrolldown{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(10px);}}
+.scroll-indicator span{font-family:var(--ff-mono);font-size:.65rem;letter-spacing:.16em;color:rgba(247,249,252,.4);text-transform:uppercase;}
+
+/* ---------- 3D DEVICE SECTION ---------- */
+.showcase{background:radial-gradient(ellipse at 50% 0%,rgba(26,115,232,.10),transparent 60%);}
+.device-stage{
+  perspective:1800px;position:relative;height:560px;margin-top:60px;
+}
+.device{
+  position:absolute;border-radius:14px;
+  background:linear-gradient(160deg,#182a3d,#0e1a28);
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 40px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.03) inset;
+  transform-style:preserve-3d;
+  transition:transform .2s ease-out;
+}
+.device .screen{position:absolute;overflow:hidden;background:#0a1420;}
+.device .screen img{width:100%;height:100%;object-fit:cover;}
+.d-desktop{width:520px;height:340px;left:50%;top:40px;margin-left:-260px;padding:14px 14px 44px;transform:rotateY(-8deg) rotateX(4deg);z-index:3;}
+.d-desktop .screen{inset:14px 14px 30px;border-radius:6px;}
+.d-desktop::after{content:'';position:absolute;bottom:10px;left:50%;translate:-50% 0;width:70px;height:6px;border-radius:4px;background:rgba(255,255,255,.1);}
+.d-laptop{width:380px;height:240px;left:2%;top:230px;padding:10px 10px 30px;transform:rotateY(18deg) rotateX(2deg);z-index:2;}
+.d-laptop .screen{inset:10px 10px 18px;border-radius:5px;}
+.d-tablet{width:190px;height:260px;right:6%;top:60px;padding:14px 10px;transform:rotateY(-20deg) rotateX(6deg);z-index:2;}
+.d-tablet .screen{inset:14px 10px;border-radius:10px;}
+.d-phone{width:120px;height:250px;right:14%;top:290px;padding:10px 8px;border-radius:22px;transform:rotateY(-14deg) rotateX(-4deg);z-index:4;}
+.d-phone .screen{inset:10px 8px;border-radius:14px;}
+@media(max-width:980px){
+  .device-stage{height:auto;display:flex;flex-direction:column;align-items:center;gap:40px;padding:20px 0 60px;}
+  .device{position:relative;left:auto;right:auto;top:auto;margin:0;transform:none !important;}
+}
+
+/* ---------- GLASS CARD BASE ---------- */
+.glass-card{
+  background:var(--glass);border:1px solid var(--glass-border);
+  backdrop-filter:blur(16px);border-radius:20px;
+  position:relative;overflow:hidden;
+  transition:transform .4s var(--ease),border-color .4s,box-shadow .4s;
+}
+.glass-card::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;
+  background:linear-gradient(135deg,rgba(26,115,232,.5),transparent 40%,rgba(245,166,35,.4));
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  opacity:0;transition:opacity .4s;
+}
+.glass-card:hover::before{opacity:1;}
+.glass-card:hover{transform:translateY(-6px);box-shadow:0 30px 60px -20px rgba(0,0,0,.5);}
+
+/* ---------- SERVICES ---------- */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;}
+.service-card{padding:34px 28px;}
+.service-card .icon{
+  width:52px;height:52px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(26,115,232,.25),rgba(245,166,35,.2));
+  display:flex;align-items:center;justify-content:center;margin-bottom:22px;
+  font-size:1.3rem;
+}
+.service-card h3{font-size:1.15rem;margin-bottom:10px;font-weight:600;}
+.service-card p{font-size:.88rem;color:rgba(247,249,252,.55);}
+.service-card .num{
+  position:absolute;top:20px;right:24px;font-family:var(--ff-mono);
+  font-size:.72rem;color:rgba(247,249,252,.3);
+}
+
+/* ---------- PORTFOLIO ---------- */
+.portfolio-tabs{display:flex;gap:12px;margin-bottom:46px;flex-wrap:wrap;}
+.ptab{padding:9px 20px;border-radius:999px;border:1px solid var(--glass-border);font-size:.82rem;color:rgba(247,249,252,.6);transition:.3s;}
+.ptab.active,.ptab:hover{background:var(--gold);color:var(--navy-deep);border-color:var(--gold);font-weight:600;}
+.portfolio-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:26px;}
+.pf-card{position:relative;border-radius:22px;overflow:hidden;height:360px;cursor:pointer;}
+.pf-card .pf-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .7s var(--ease);}
+.pf-card:hover .pf-bg{transform:scale(1.08);}
+.pf-card .pf-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(8,17,25,.94) 5%,rgba(8,17,25,.15) 60%);}
+.pf-card .pf-content{position:absolute;left:0;right:0;bottom:0;padding:28px;transform:translateY(14px);transition:transform .4s var(--ease);}
+.pf-card:hover .pf-content{transform:translateY(0);}
+.pf-tag{font-family:var(--ff-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:block;}
+.pf-card h3{font-size:1.4rem;margin-bottom:6px;}
+.pf-card p{font-size:.85rem;color:rgba(247,249,252,.6);max-height:0;overflow:hidden;transition:max-height .4s var(--ease),margin .4s;}
+.pf-card:hover p{max-height:60px;margin-top:8px;}
+.pf-arrow{position:absolute;top:24px;right:24px;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;transition:.35s;backdrop-filter:blur(6px);}
+.pf-card:hover .pf-arrow{background:var(--gold);color:var(--navy-deep);transform:rotate(45deg);}
+
+/* ---------- WHY CHOOSE ---------- */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:2px;background:var(--glass-border);border:1px solid var(--glass-border);border-radius:20px;overflow:hidden;}
+.why-item{background:var(--navy);padding:34px 28px;transition:background .35s;}
+.why-item:hover{background:#122236;}
+.why-item .ic{font-size:1.5rem;margin-bottom:16px;color:var(--gold);}
+.why-item h4{font-size:1rem;margin-bottom:8px;font-weight:600;}
+.why-item p{font-size:.83rem;color:rgba(247,249,252,.52);}
+
+/* ---------- PRICING ---------- */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:26px;align-items:stretch;}
+.price-card{padding:42px 34px;display:flex;flex-direction:column;}
+.price-card.featured{background:linear-gradient(160deg,rgba(26,115,232,.16),rgba(245,166,35,.08));border-color:rgba(245,166,35,.4);transform:scale(1.03);box-shadow:0 30px 70px -20px rgba(26,115,232,.4);}
+.price-badge{position:absolute;top:20px;right:20px;background:var(--gold);color:var(--navy-deep);font-size:.65rem;font-weight:700;padding:5px 12px;border-radius:999px;letter-spacing:.06em;text-transform:uppercase;}
+.price-card .tier{font-family:var(--ff-mono);text-transform:uppercase;letter-spacing:.14em;font-size:.75rem;color:var(--gold);margin-bottom:14px;}
+.price-card .amt{font-family:var(--ff-display);font-size:2.4rem;font-weight:800;margin-bottom:4px;}
+.price-card .amt sup{font-size:1rem;font-weight:500;color:rgba(247,249,252,.5);}
+.price-card .desc{font-size:.85rem;color:rgba(247,249,252,.5);margin-bottom:28px;}
+.price-card ul{list-style:none;margin-bottom:32px;flex:1;}
+.price-card li{font-size:.88rem;padding:9px 0;border-top:1px solid var(--glass-border);display:flex;gap:10px;color:rgba(247,249,252,.75);}
+.price-card li:first-child{border-top:none;}
+.price-card li::before{content:'✓';color:var(--gold);font-weight:700;}
+
+/* ---------- TESTIMONIALS ---------- */
+.testi-wrap{position:relative;max-width:760px;margin:0 auto;overflow:hidden;}
+.testi-track{display:flex;transition:transform .7s var(--ease);}
+.testi-card{min-width:100%;padding:50px 46px;text-align:center;}
+.testi-card .quote{font-size:1.3rem;font-family:var(--ff-display);font-weight:500;line-height:1.5;margin-bottom:30px;}
+.testi-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--gold));margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-weight:700;}
+.testi-name{font-weight:600;}
+.testi-role{font-size:.8rem;color:rgba(247,249,252,.5);}
+.testi-dots{display:flex;justify-content:center;gap:10px;margin-top:30px;}
+.testi-dots button{width:8px;height:8px;border-radius:50%;background:rgba(247,249,252,.25);transition:.3s;}
+.testi-dots button.active{background:var(--gold);width:24px;border-radius:4px;}
+
+/* ---------- SKILLS ---------- */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:30px;}
+.skill-item{text-align:center;}
+.skill-ring{width:110px;height:110px;margin:0 auto 16px;position:relative;}
+.skill-ring svg{transform:rotate(-90deg);width:100%;height:100%;}
+.skill-ring circle{fill:none;stroke-width:6;}
+.skill-ring .bg{stroke:rgba(255,255,255,.08);}
+.skill-ring .fg{stroke:url(#skillGrad);stroke-linecap:round;stroke-dasharray:301;stroke-dashoffset:301;transition:stroke-dashoffset 1.4s var(--ease);}
+.skill-ring .pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--ff-display);font-weight:700;font-size:1.1rem;}
+.skill-item span{font-size:.85rem;color:rgba(247,249,252,.7);}
+
+/* ---------- PROCESS ---------- */
+.process-list{max-width:820px;margin:0 auto;position:relative;}
+.process-list::before{content:'';position:absolute;left:29px;top:14px;bottom:14px;width:1px;background:linear-gradient(var(--blue),var(--gold));opacity:.4;}
+.process-step{display:flex;gap:28px;padding:26px 0;position:relative;}
+.process-step .pnum{
+  width:58px;height:58px;flex:none;border-radius:50%;
+  background:var(--navy);border:1px solid var(--glass-border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--ff-display);font-weight:800;font-size:1.1rem;color:var(--gold);
+  position:relative;z-index:1;transition:.4s;
+}
+.process-step:hover .pnum{background:var(--gold);color:var(--navy-deep);box-shadow:0 0 30px rgba(245,166,35,.5);}
+.process-step h3{font-size:1.15rem;margin-bottom:6px;padding-top:8px;}
+.process-step p{font-size:.87rem;color:rgba(247,249,252,.52);max-width:480px;}
+
+/* ---------- CONTACT ---------- */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
+.contact-card{padding:44px;}
+.contact-row{display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--glass-border);font-size:.92rem;}
+.contact-row:first-child{border-top:none;}
+.contact-row .k{color:rgba(247,249,252,.5);}
+.contact-row .v{font-weight:600;}
+.contact-btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;}
+.mini-btn{padding:12px 20px;border-radius:12px;border:1px solid var(--glass-border);font-size:.82rem;font-weight:600;background:var(--glass);transition:.3s;}
+.mini-btn:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px);}
+.map-box{
+  border-radius:20px;overflow:hidden;height:100%;min-height:340px;
+  background:
+    linear-gradient(rgba(13,27,42,.85),rgba(13,27,42,.85)),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0 1px,transparent 1px 40px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 40px);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;
+  border:1px solid var(--glass-border);
+}
+.map-pin{width:44px;height:44px;border-radius:50% 50% 50% 0;background:var(--gold);transform:rotate(-45deg);box-shadow:0 0 30px rgba(245,166,35,.6);}
+.map-box span{font-family:var(--ff-mono);font-size:.75rem;color:rgba(247,249,252,.4);letter-spacing:.08em;}
+
+/* ---------- FOOTER ---------- */
+footer{padding:80px 0 30px;border-top:1px solid var(--glass-border);}
+.footer-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:50px;margin-bottom:60px;}
+.footer-brand p{max-width:280px;color:rgba(247,249,252,.5);font-size:.88rem;margin-top:16px;}
+.footer-col h5{font-size:.78rem;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);margin-bottom:18px;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:12px;}
+.footer-col a{font-size:.88rem;color:rgba(247,249,252,.6);transition:.3s;}
+.footer-col a:hover{color:var(--white);padding-left:4px;}
+.social-row{display:flex;gap:12px;margin-top:20px;}
+.social-row a{width:38px;height:38px;border-radius:50%;border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:.3s;}
+.social-row a:hover{background:var(--gold);color:var(--navy-deep);border-color:var(--gold);}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:.78rem;color:rgba(247,249,252,.4);}
+
+@media(max-width:760px){
+  .contact-grid{grid-template-columns:1fr;}
+  .footer-top{gap:36px;}
+  section{padding:90px 0;}
+}
+
+.reveal{opacity:0;transform:translateY(40px);}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}
+}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+</style>
+</head>
+<body>
+
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+
+<!-- ===== NAV ===== -->
+<header id="siteHeader">
+  <div class="container nav-inner">
+    <a href="#home" class="logo"><span class="logo-mark">A</span>AFD<span>S</span></a>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <a href="#contact" class="nav-cta magnetic">Hire Me</a>
+    <div class="nav-toggle"><span></span><span></span><span></span></div>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="home">
+  <canvas id="particle-canvas"></canvas>
+  <div class="hero-glow"></div>
+  <div class="hero-beam b1"></div>
+  <div class="hero-beam b2"></div>
+  <div class="container hero-inner">
+    <div class="hero-badge"><span class="dot"></span> Available for new projects</div>
+    <h1>
+      <div class="line"><span>Building Websites That</span></div>
+      <div class="line"><span class="grad-text">Grow Your Business.</span></div>
+    </h1>
+    <p class="sub">Modern websites that increase trust, attract customers and help businesses succeed online — designed and built by Hafiz Muhammad Ubai, AFDS.</p>
+    <div class="hero-ctas">
+      <a href="#portfolio" class="btn btn-primary magnetic"><span>View Portfolio</span></a>
+      <a href="#contact" class="btn btn-ghost magnetic">Get Free Consultation</a>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="num"><span>50</span>+</div><div class="lbl">Projects</div></div>
+      <div class="stat"><div class="num">100<span>%</span></div><div class="lbl">Responsive</div></div>
+      <div class="stat"><div class="num">24<span>/7</span></div><div class="lbl">Support</div></div>
+    </div>
+  </div>
+  <div class="scroll-indicator"><div class="mouse"><i></i></div><span>Scroll</span></div>
+</section>
+
+<!-- ===== 3D DEVICE SHOWCASE ===== -->
+<section class="showcase">
+  <div class="container">
+    <div class="section-head" style="text-align:center;margin-left:auto;margin-right:auto;">
+      <div class="eyebrow" style="justify-content:center;">Cross-Device Craft</div>
+      <h2 class="section-title reveal">One codebase. <span class="grad-text">Every screen, flawless.</span></h2>
+      <p class="section-sub reveal" style="margin:0 auto;">Move your mouse across the stage — every build is engineered pixel-perfect from a 27" desktop down to a 5" phone.</p>
+    </div>
+    <div class="device-stage" id="deviceStage">
+      <div class="device d-desktop"><div class="screen"><img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?q=80&w=800&auto=format&fit=crop" alt="Website mockup on desktop"></div></div>
+      <div class="device d-laptop"><div class="screen"><img src="https://images.unsplash.com/photo-1587440871875-191322ee64b0?q=80&w=800&auto=format&fit=crop" alt="Website mockup on laptop"></div></div>
+      <div class="device d-tablet"><div class="screen"><img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=600&auto=format&fit=crop" alt="Website mockup on tablet"></div></div>
+      <div class="device d-phone"><div class="screen"><img src="https://images.unsplash.com/photo-1512428813834-c702c7702b78?q=80&w=400&auto=format&fit=crop" alt="Website mockup on phone"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section id="services">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">What I Build</div>
+      <h2 class="section-title reveal">Services engineered <span class="grad-text">around your industry.</span></h2>
+      <p class="section-sub reveal">Every business is different — so every build starts from your goals, not a template.</p>
+    </div>
+    <div class="services-grid" id="servicesGrid"></div>
+  </div>
+</section>
+
+<!-- ===== PORTFOLIO ===== -->
+<section id="portfolio">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Selected Work</div>
+      <h2 class="section-title reveal">Projects that <span class="grad-text">speak for themselves.</span></h2>
+      <p class="section-sub reveal">A glimpse into brands transformed into powerful digital experiences.</p>
+    </div>
+    <div class="portfolio-tabs" id="portfolioTabs"></div>
+    <div class="portfolio-grid" id="portfolioGrid"></div>
+  </div>
+</section>
+
+<!-- ===== WHY CHOOSE ===== -->
+<section id="why">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">The Difference</div>
+      <h2 class="section-title reveal">Why businesses <span class="grad-text">choose AFDS.</span></h2>
+    </div>
+    <div class="why-grid" id="whyGrid"></div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section id="pricing">
+  <div class="container">
+    <div class="section-head" style="text-align:center;margin-left:auto;margin-right:auto;">
+      <div class="eyebrow" style="justify-content:center;">Investment</div>
+      <h2 class="section-title reveal">Simple, honest <span class="grad-text">pricing.</span></h2>
+      <p class="section-sub reveal" style="margin:0 auto;">Pick a starting point — every package is tailored to your business after a free consultation.</p>
+    </div>
+    <div class="pricing-grid" id="pricingGrid"></div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section id="testimonials">
+  <div class="container">
+    <div class="section-head" style="text-align:center;margin-left:auto;margin-right:auto;">
+      <div class="eyebrow" style="justify-content:center;">Client Words</div>
+      <h2 class="section-title reveal">Trusted by ambitious <span class="grad-text">business owners.</span></h2>
+    </div>
+    <div class="testi-wrap glass-card">
+      <div class="testi-track" id="testiTrack"></div>
+    </div>
+    <div class="testi-dots" id="testiDots"></div>
+  </div>
+</section>
+
+<!-- ===== SKILLS ===== -->
+<section id="skills">
+  <div class="container">
+    <div class="section-head" style="text-align:center;margin-left:auto;margin-right:auto;">
+      <div class="eyebrow" style="justify-content:center;">Toolkit</div>
+      <h2 class="section-title reveal">Technology <span class="grad-text">stack.</span></h2>
+    </div>
+    <div class="skills-grid" id="skillsGrid"></div>
+    <svg width="0" height="0"><defs><linearGradient id="skillGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1A73E8"/><stop offset="100%" stop-color="#F5A623"/></linearGradient></defs></svg>
+  </div>
+</section>
+
+<!-- ===== PROCESS ===== -->
+<section id="process">
+  <div class="container">
+    <div class="section-head" style="text-align:center;margin-left:auto;margin-right:auto;">
+      <div class="eyebrow" style="justify-content:center;">How It Works</div>
+      <h2 class="section-title reveal">From idea to <span class="grad-text">launch.</span></h2>
+    </div>
+    <div class="process-list" id="processList"></div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact">
+  <div class="container">
+    <div class="section-head" style="text-align:center;margin-left:auto;margin-right:auto;">
+      <div class="eyebrow" style="justify-content:center;">Let's Talk</div>
+      <h2 class="section-title reveal">Ready to grow your <span class="grad-text">business online?</span></h2>
+      <p class="section-sub reveal" style="margin:0 auto;">Tell me about your project — I typically reply within a few hours.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card glass-card">
+        <div class="contact-row"><span class="k">Developer</span><span class="v">Hafiz Muhammad Ubai</span></div>
+        <div class="contact-row"><span class="k">Brand</span><span class="v">AFDS</span></div>
+        <div class="contact-row"><span class="k">Phone</span><span class="v">0312-2220036</span></div>
+        <div class="contact-row"><span class="k">Email</span><span class="v">Ubai.web2026@gmail.com</span></div>
+        <div class="contact-btns">
+          <a class="mini-btn magnetic" href="https://wa.me/923122220036" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="mini-btn magnetic" href="mailto:Ubai.web2026@gmail.com">Email</a>
+          <a class="mini-btn magnetic" href="tel:03122220036">Call Now</a>
+          <a class="mini-btn magnetic" href="#contact" style="background:var(--gold);color:var(--navy-deep);border-color:var(--gold);">Hire Me</a>
+        </div>
+      </div>
+      <div class="map-box glass-card">
+        <div class="map-pin"></div>
+        <span>MAP PLACEHOLDER — PAKISTAN</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#home" class="logo"><span class="logo-mark">A</span>AFD<span>S</span></a>
+        <p>Creating digital experiences that inspire.</p>
+        <div class="social-row">
+          <a href="#" aria-label="GitHub">GH</a>
+          <a href="#" aria-label="LinkedIn">Li</a>
+          <a href="#" aria-label="Facebook">Fb</a>
+          <a href="#" aria-label="Instagram">Ig</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul>
+          <li>Ubai.web2026@gmail.com</li>
+          <li>0312-2220036</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 AFDS. All rights reserved.</span>
+      <span>Designed &amp; built by Hafiz Muhammad Ubai</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============ DATA ============ */
+const services = [
+  ["Business Website","Professional sites that build instant credibility for local and national brands."],
+  ["Corporate Website","Structured, authoritative platforms for established companies and teams."],
+  ["Medical Website","Patient-friendly, trustworthy sites for clinics, doctors and healthcare providers."],
+  ["Restaurant Website","Menu-first designs with online ordering that make mouths water."],
+  ["Boutique Website","Elegant, editorial layouts that showcase fashion and lifestyle products."],
+  ["Gym Website","High-energy pages built to convert visitors into members."],
+  ["Construction Website","Bold, project-driven sites that showcase capability and scale."],
+  ["Real Estate Website","Listing-rich platforms with immersive property browsing."],
+  ["Portfolio Website","Personal brand sites that put your best work center stage."],
+  ["E-commerce Website","Conversion-optimized stores built to sell around the clock."],
+  ["Landing Pages","Focused, high-converting pages for campaigns and launches."],
+  ["Website Redesign","Modern makeovers for outdated sites holding your brand back."],
+  ["SEO Optimization","Technical and on-page SEO that gets you found on Google."],
+  ["Speed Optimization","Lightning-fast load times that keep visitors from bouncing."],
+];
+const svcIcons=["💼","🏢","🩺","🍽️","👗","🏋️","🏗️","🏠","🎨","🛒","🚀","🔄","🔎","⚡"];
+
+const portfolio = [
+  ["Fixify","Product","A slick service marketplace platform focused on trust and speed.","https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop"],
+  ["Leiamra Engineering","Corporate","An authoritative engineering firm site built for enterprise credibility.","https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&auto=format&fit=crop"],
+  ["Noor-ul-Quran","Education","A calm, accessible learning platform for online Quran education.","https://images.unsplash.com/photo-1466442929976-97f336a657be?q=80&w=1200&auto=format&fit=crop"],
+  ["Corporate Website","Corporate","Clean, structured design for a growing consulting business.","https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop"],
+  ["Boutique Website","E-commerce","An editorial storefront that turns browsers into buyers.","https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=1200&auto=format&fit=crop"],
+  ["Gym Website","Fitness","A bold membership site built to fill classes fast.","https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1200&auto=format&fit=crop"],
+  ["Clinic Website","Medical","A reassuring booking-first experience for patients.","https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1200&auto=format&fit=crop"],
+  ["Restaurant Website","Restaurant","A menu-forward site with mouthwatering visual storytelling.","https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop"],
+];
+const pfCats=["All",...new Set(portfolio.map(p=>p[1]))];
+
+const whyItems=[
+  ["⚡","Fast Delivery","Projects shipped on schedule, every time."],
+  ["💎","Premium Design","Every pixel considered, nothing generic."],
+  ["📱","Responsive","Flawless on any device, any screen size."],
+  ["🔎","SEO Ready","Built from day one to rank on Google."],
+  ["🎛️","Modern UI","Interfaces that feel current and intuitive."],
+  ["🔒","Secure","Best-practice security baked into every build."],
+  ["🚀","Fast Loading","Optimized for speed and Core Web Vitals."],
+  ["💰","Affordable","Premium quality without the agency price tag."],
+  ["🤝","Professional Support","Real help, long after launch day."],
+];
+
+const pricing=[
+  ["Starter","$249",["1–3 page website","Mobile responsive design","Basic SEO setup","Contact form integration","7-day delivery"],false],
+  ["Business","$599",["Up to 8 pages","Custom premium design","Advanced SEO optimization","CMS / easy content editing","Speed optimization","14-day delivery","1 month free support"],true],
+  ["Premium","$1299",["Unlimited pages","Full custom UI/UX design","E-commerce ready","Advanced animations","Priority delivery","3 months free support","Dedicated project manager"],false],
+];
+
+const testimonials=[
+  ["“Ubai rebuilt our website and inquiries doubled in the first month. The design feels genuinely premium.”","Ahmed Raza","Founder, Leiamra Engineering"],
+  ["“Fast communication, faster delivery. Our new site finally reflects the quality of our clinic.”","Dr. Sana Malik","Director, City Health Clinic"],
+  ["“The team behind AFDS understood our brand instantly. Bookings went up within weeks of launch.”","Bilal Hussain","Owner, Fixify"],
+];
+
+const skills=[["HTML5",95],["CSS3",93],["JavaScript",90],["PHP",85],["MySQL",82],["Bootstrap",92],["Tailwind CSS",90],["Git",80]];
+
+const process=[
+  ["Discussion","We talk through your goals, audience and what success looks like."],
+  ["Planning","I map the sitemap, content and technical approach before any design starts."],
+  ["Design","Custom, premium visuals crafted around your brand — not a template."],
+  ["Development","Clean, fast, scalable code brought to life pixel by pixel."],
+  ["Testing","Every page checked across devices, browsers and real-world conditions."],
+  ["Launch","Your site goes live — with support ready for whatever comes next."],
+];
+
+/* ============ RENDER ============ */
+const servicesGrid=document.getElementById('servicesGrid');
+services.forEach((s,i)=>{
+  servicesGrid.insertAdjacentHTML('beforeend',`
+  <div class="service-card glass-card reveal">
+    <span class="num">0${i+1}</span>
+    <div class="icon">${svcIcons[i]}</div>
+    <h3>${s[0]}</h3>
+    <p>${s[1]}</p>
+  </div>`);
+});
+
+const portfolioGrid=document.getElementById('portfolioGrid');
+const portfolioTabs=document.getElementById('portfolioTabs');
+pfCats.forEach((c,i)=>{
+  portfolioTabs.insertAdjacentHTML('beforeend',`<button class="ptab ${i===0?'active':''}" data-cat="${c}">${c}</button>`);
+});
+function renderPortfolio(cat='All'){
+  portfolioGrid.innerHTML='';
+  portfolio.filter(p=>cat==='All'||p[1]===cat).forEach(p=>{
+    portfolioGrid.insertAdjacentHTML('beforeend',`
+    <div class="pf-card reveal">
+      <div class="pf-bg" style="background-image:url('${p[3]}')"></div>
+      <div class="pf-overlay"></div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-content">
+        <span class="pf-tag">${p[1]}</span>
+        <h3>${p[0]}</h3>
+        <p>${p[2]}</p>
+      </div>
+    </div>`);
+  });
+}
+renderPortfolio();
+portfolioTabs.addEventListener('click',e=>{
+  if(e.target.tagName!=='BUTTON')return;
+  [...portfolioTabs.children].forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');
+  renderPortfolio(e.target.dataset.cat);
+});
+
+const whyGrid=document.getElementById('whyGrid');
+whyItems.forEach(w=>{
+  whyGrid.insertAdjacentHTML('beforeend',`
+  <div class="why-item reveal"><div class="ic">${w[0]}</div><h4>${w[1]}</h4><p>${w[2]}</p></div>`);
+});
+
+const pricingGrid=document.getElementById('pricingGrid');
+pricing.forEach(p=>{
+  pricingGrid.insertAdjacentHTML('beforeend',`
+  <div class="price-card glass-card reveal ${p[4]?'featured':''}">
+    ${p[4]?'<span class="price-badge">Most Popular</span>':''}
+    <span class="tier">${p[0]}</span>
+    <div class="amt">${p[1]}<sup>/project</sup></div>
+    <p class="desc">Everything you need to launch with confidence.</p>
+    <ul>${p[2].map(li=>`<li>${li}</li>`).join('')}</ul>
+    <a href="#contact" class="btn ${p[4]?'btn-primary':'btn-ghost'} magnetic" style="justify-content:center;"><span>Get Started</span></a>
+  </div>`);
+});
+
+const testiTrack=document.getElementById('testiTrack');
+const testiDots=document.getElementById('testiDots');
+testimonials.forEach((t,i)=>{
+  testiTrack.insertAdjacentHTML('beforeend',`
+  <div class="testi-card">
+    <p class="quote">${t[0]}</p>
+    <div class="testi-avatar">${t[1].split(' ').map(n=>n[0]).join('')}</div>
+    <div class="testi-name">${t[1]}</div>
+    <div class="testi-role">${t[2]}</div>
+  </div>`);
+  testiDots.insertAdjacentHTML('beforeend',`<button data-i="${i}" class="${i===0?'active':''}"></button>`);
+});
+let testiIdx=0;
+function goTesti(i){
+  testiIdx=(i+testimonials.length)%testimonials.length;
+  testiTrack.style.transform=`translateX(-${testiIdx*100}%)`;
+  [...testiDots.children].forEach((d,j)=>d.classList.toggle('active',j===testiIdx));
+}
+testiDots.addEventListener('click',e=>{if(e.target.dataset.i)goTesti(+e.target.dataset.i);});
+setInterval(()=>goTesti(testiIdx+1),5000);
+
+const skillsGrid=document.getElementById('skillsGrid');
+skills.forEach(s=>{
+  skillsGrid.insertAdjacentHTML('beforeend',`
+  <div class="skill-item reveal">
+    <div class="skill-ring" data-pct="${s[1]}">
+      <svg viewBox="0 0 110 110">
+        <circle class="bg" cx="55" cy="55" r="48"></circle>
+        <circle class="fg" cx="55" cy="55" r="48"></circle>
+      </svg>
+      <div class="pct">${s[1]}%</div>
+    </div>
+    <span>${s[0]}</span>
+  </div>`);
+});
+
+const processList=document.getElementById('processList');
+process.forEach((p,i)=>{
+  processList.insertAdjacentHTML('beforeend',`
+  <div class="process-step reveal">
+    <div class="pnum">0${i+1}</div>
+    <div><h3>${p[0]}</h3><p>${p[1]}</p></div>
+  </div>`);
+});
+
+/* ============ NAV SCROLL STATE ============ */
+const headerEl=document.getElementById('siteHeader');
+window.addEventListener('scroll',()=>{
+  headerEl.classList.toggle('scrolled',window.scrollY>40);
+});
+
+/* ============ CUSTOM CURSOR ============ */
+const dot=document.querySelector('.cursor-dot'), ring=document.querySelector('.cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
+function animRing(){rx+=(mx-rx)*0.16;ry+=(my-ry)*0.16;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll('a,button,.glass-card,.magnetic').forEach(el=>{
+  el.addEventListener('mouseenter',()=>ring.classList.add('hover'));
+  el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));
+});
+
+/* ============ MAGNETIC BUTTONS ============ */
+document.querySelectorAll('.magnetic').forEach(el=>{
+  el.addEventListener('mousemove',e=>{
+    const r=el.getBoundingClientRect();
+    const x=e.clientX-r.left-r.width/2, y=e.clientY-r.top-r.height/2;
+    el.style.transform=`translate(${x*0.25}px,${y*0.35}px)`;
+  });
+  el.addEventListener('mouseleave',()=>{el.style.transform='';});
+});
+
+/* ============ PARTICLE CANVAS ============ */
+const canvas=document.getElementById('particle-canvas');
+const ctx=canvas.getContext('2d');
+let W,H,particles=[];
+function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;}
+function initParticles(){
+  particles=[];
+  const count=Math.min(90,Math.floor(W/16));
+  for(let i=0;i<count;i++){
+    particles.push({
+      x:Math.random()*W,y:Math.random()*H,
+      r:Math.random()*1.8+0.4,
+      vx:(Math.random()-0.5)*0.25,vy:(Math.random()-0.5)*0.25,
+      c: Math.random()>0.75 ? '245,166,35' : '79,155,255',
+      a: Math.random()*0.5+0.2
+    });
+  }
+}
+let pmx=W/2,pmy=H/2;
+canvas.addEventListener('mousemove',e=>{const r=canvas.getBoundingClientRect();pmx=e.clientX-r.left;pmy=e.clientY-r.top;});
+function drawParticles(){
+  ctx.clearRect(0,0,W,H);
+  particles.forEach(p=>{
+    const dx=p.x-pmx,dy=p.y-pmy,dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<140){p.x+=dx/dist*0.6;p.y+=dy/dist*0.6;}
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${p.c},${p.a})`;ctx.fill();
+  });
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      const a=particles[i],b=particles[j];
+      const d=Math.hypot(a.x-b.x,a.y-b.y);
+      if(d<100){
+        ctx.strokeStyle=`rgba(26,115,232,${0.12*(1-d/100)})`;
+        ctx.lineWidth=1;
+        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawParticles);
+}
+window.addEventListener('resize',()=>{resize();initParticles();});
+resize();initParticles();drawParticles();
+
+/* ============ DEVICE 3D PARALLAX ============ */
+const stage=document.getElementById('deviceStage');
+if(window.matchMedia('(min-width: 981px)').matches){
+  stage.addEventListener('mousemove',e=>{
+    const r=stage.getBoundingClientRect();
+    const px=(e.clientX-r.left)/r.width-0.5, py=(e.clientY-r.top)/r.height-0.5;
+    stage.querySelectorAll('.device').forEach(d=>{
+      const base = d.classList.contains('d-desktop') ? {ry:-8,rx:4} :
+                   d.classList.contains('d-laptop') ? {ry:18,rx:2} :
+                   d.classList.contains('d-tablet') ? {ry:-20,rx:6} : {ry:-14,rx:-4};
+      d.style.transform=`rotateY(${base.ry - px*14}deg) rotateX(${base.rx + py*10}deg)`;
+    });
+  });
+  stage.addEventListener('mouseleave',()=>{
+    stage.querySelectorAll('.device').forEach(d=>{d.style.transform='';});
+  });
+}
+
+/* ============ GSAP SCROLL REVEALS ============ */
+gsap.registerPlugin(ScrollTrigger);
+gsap.utils.toArray('.reveal').forEach(el=>{
+  gsap.to(el,{
+    opacity:1,y:0,duration:1,ease:'power3.out',
+    scrollTrigger:{trigger:el,start:'top 88%'}
+  });
+});
+gsap.utils.toArray('.hero h1 .line span').forEach((el,i)=>{
+  gsap.from(el,{yPercent:120,opacity:0,duration:1,delay:0.15+i*0.12,ease:'power4.out'});
+});
+gsap.from('.hero-badge',{opacity:0,y:-14,duration:0.8,ease:'power3.out'});
+gsap.from('.hero .sub',{opacity:0,y:16,duration:1,delay:0.5,ease:'power3.out'});
+gsap.from('.hero-ctas',{opacity:0,y:16,duration:1,delay:0.65,ease:'power3.out'});
+gsap.from('.stats-row',{opacity:0,y:16,duration:1,delay:0.8,ease:'power3.out'});
+
+/* animate stat numbers */
+document.querySelectorAll('.stat .num span').forEach(el=>{
+  ScrollTrigger.create({
+    trigger:el,start:'top 90%',once:true,
+    onEnter:()=>gsap.from(el,{textContent:0,duration:1.4,snap:{textContent:1},ease:'power1.out'})
+  });
+});
+
+/* skill rings */
+document.querySelectorAll('.skill-ring').forEach(ring=>{
+  const pct=+ring.dataset.pct;
+  const fg=ring.querySelector('.fg');
+  ScrollTrigger.create({
+    trigger:ring,start:'top 90%',once:true,
+    onEnter:()=>{fg.style.strokeDashoffset = 301 - (301*pct/100);}
+  });
+});
+
+/* mobile nav toggle (simple slide list) */
+const toggle=document.querySelector('.nav-toggle');
+toggle.addEventListener('click',()=>{
+  let m=document.querySelector('.mobile-menu');
+  if(m){m.remove();toggle.classList.remove('open');return;}
+  m=document.createElement('div');
+  m.className='mobile-menu';
+  m.style.cssText='position:fixed;inset:0;top:64px;background:rgba(8,17,25,.98);backdrop-filter:blur(20px);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;';
+  ['Home','Services','Portfolio','Pricing','Contact'].forEach(t=>{
+    const a=document.createElement('a');
+    a.href='#'+t.toLowerCase();a.textContent=t;
+    a.style.cssText='font-family:var(--ff-display);font-size:1.6rem;font-weight:700;color:#fff;';
+    a.addEventListener('click',()=>{m.remove();});
+    m.appendChild(a);
+  });
+  document.body.appendChild(m);
+});
+</script>
+</body>
+</html>
